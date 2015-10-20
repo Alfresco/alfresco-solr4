@@ -223,6 +223,7 @@ public class SolrInformationServer implements InformationServer
     private SolrContentStore solrContentStore;
     private String alfrescoVersion;
     private boolean transformContent = true;
+    private boolean recordUnindexedNodes = true;
     private long lag;
     private long holeRetention;
     private int contentStreamLimit;
@@ -290,6 +291,7 @@ public class SolrInformationServer implements InformationServer
         Properties p = core.getResourceLoader().getCoreProperties();
         alfrescoVersion = p.getProperty("alfresco.version", "5.0.0");
         transformContent = Boolean.parseBoolean(p.getProperty("alfresco.index.transformContent", "true"));
+        recordUnindexedNodes = Boolean.parseBoolean(p.getProperty("alfresco.recordUnindexedNodes", "true"));
         lag = Integer.parseInt(p.getProperty("alfresco.lag", "1000"));
         holeRetention = Integer.parseInt(p.getProperty("alfresco.hole.retention", "3600000"));
         
@@ -1493,7 +1495,10 @@ public class SolrInformationServer implements InformationServer
                             SolrInputDocument doc = createNewDoc(nodeMetaData, DOC_TYPE_UNINDEXED_NODE);
                             storeDocOnSolrContentStore(nodeMetaData, doc);
                             addDocCmd.solrDoc = doc;
-                            processor.processAdd(addDocCmd);
+                            if (recordUnindexedNodes)
+                            {
+                                processor.processAdd(addDocCmd);
+                            }
 
                             long end = System.nanoTime();
                             this.trackerStats.addNodeTime(end - start);
@@ -1893,7 +1898,10 @@ public class SolrInformationServer implements InformationServer
                             SolrInputDocument doc = createNewDoc(nodeMetaData, DOC_TYPE_UNINDEXED_NODE);
                             storeDocOnSolrContentStore(nodeMetaData, doc);
                             addDocCmd.solrDoc = doc;
-                            processor.processAdd(addDocCmd);
+                            if (recordUnindexedNodes)
+                            {
+                                processor.processAdd(addDocCmd);
+                            }
 
                             long end = System.nanoTime();
                             this.trackerStats.addNodeTime(end - start);
