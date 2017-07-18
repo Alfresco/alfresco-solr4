@@ -39,9 +39,12 @@ import org.alfresco.solr.SolrInformationServer;
 import org.alfresco.solr.client.SOLRAPIClient;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class TrackerRegistryTest
 {
     private static TrackerRegistry reg = new TrackerRegistry();
@@ -79,6 +82,7 @@ public class TrackerRegistryTest
         contentTracker = new ContentTracker(props, client, coreName, informationServer);
         metadataTracker = new MetadataTracker(props, client, coreName, informationServer);
         modelTracker = new ModelTracker("alfresco", props, client, coreName, informationServer);
+        registerTrackers(CORE_NAME);
     }
 
     
