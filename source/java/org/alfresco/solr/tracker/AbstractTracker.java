@@ -34,7 +34,6 @@ import org.alfresco.service.cmr.repository.StoreRef;
 import org.alfresco.solr.IndexTrackingShutdownException;
 import org.alfresco.solr.InformationServer;
 import org.alfresco.solr.TrackerState;
-import org.alfresco.solr.client.Node;
 import org.alfresco.solr.client.SOLRAPIClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +53,7 @@ public abstract class AbstractTracker implements Tracker
     protected Properties props;    
     protected SOLRAPIClient client;
     protected InformationServer infoSrv;
-    protected String coreName;
+    protected final String coreName;
     protected StoreRef storeRef;
     protected long batchCount;
     protected boolean isSlave = false;
@@ -75,16 +74,6 @@ public abstract class AbstractTracker implements Tracker
      * A thread handler can be used by subclasses, but they have to intentionally instantiate it.
      */
     protected ThreadHandler threadHandler;
-   
-   
-   
-
-    /**
-     * Default constructor, strictly for testing.
-     */
-    protected AbstractTracker()
-    {
-    }
     
     protected AbstractTracker(Properties p, SOLRAPIClient client, String coreName, InformationServer informationServer)
     {

@@ -56,11 +56,6 @@ public class ContentTracker extends AbstractTracker implements Tracker
         threadHandler = new ThreadHandler(p, coreName, "ContentTracker");
     }
     
-    ContentTracker()
-    {
-        // Testing purposes only
-    }
-    
     @Override
     protected void doTrack() throws Exception
     {

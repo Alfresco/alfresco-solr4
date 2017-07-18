@@ -85,11 +85,6 @@ public class MetadataTracker extends AbstractTracker implements Tracker
         threadHandler = new ThreadHandler(p, coreName, "MetadataTracker");
     }
     
-    MetadataTracker()
-    {
-        // Testing purposes only
-    }
-
     @Override
     protected void doTrack() throws AuthenticationException, IOException, JSONException, EncoderException
     {

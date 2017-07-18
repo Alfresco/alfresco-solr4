@@ -25,27 +25,46 @@
  */
 package org.alfresco.solr.tracker;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.Properties;
 import java.util.Set;
 
-import org.junit.BeforeClass;
+import org.alfresco.solr.SolrInformationServer;
+import org.alfresco.solr.client.SOLRAPIClient;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Spy;
 
 public class TrackerRegistryTest
 {
     private static TrackerRegistry reg = new TrackerRegistry();
-    private static Tracker aclTracker = new AclTracker();
-    private static Tracker contentTracker = new ContentTracker();
-    private static Tracker metadataTracker = new MetadataTracker();
-    private static Tracker modelTracker = new ModelTracker();
+    @Mock
+    private static SOLRAPIClient client;
+    
+    private static String coreName = "theCoreName";
+    @Mock
+    private static SolrInformationServer informationServer;
+    @Spy
+    private static Properties props;
+    @Mock
+    private TrackerStats trackerStats;
+    private Tracker aclTracker;
+    private Tracker contentTracker;
+    private Tracker metadataTracker;
+    private Tracker modelTracker;
     private static final String CORE_NAME = "coreName";
     private static final String CORE2_NAME = "core2Name";
     private static final String CORE3_NAME = "core3Name";
     private static final String NOT_A_CORE_NAME = "not a core name";
 
-    public static void registerTrackers(String coreName)
+    public  void registerTrackers(String coreName)
     {
         reg.register(coreName, aclTracker);
         reg.register(coreName, contentTracker );
@@ -53,10 +72,13 @@ public class TrackerRegistryTest
         reg.register(coreName, modelTracker);
     }
     
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception
+    @Before
+    public void setUpBeforeClass() throws Exception
     {
-        registerTrackers(CORE_NAME);
+        aclTracker = new AclTracker(props, client, coreName, informationServer);
+        contentTracker = new ContentTracker(props, client, coreName, informationServer);
+        metadataTracker = new MetadataTracker(props, client, coreName, informationServer);
+        modelTracker = new ModelTracker("alfresco", props, client, coreName, informationServer);
     }
 
     

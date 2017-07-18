@@ -75,14 +75,6 @@ public class AclTracker extends AbstractTracker
     private ConcurrentLinkedQueue<Long> aclsToIndex = new ConcurrentLinkedQueue<Long>();
     private ConcurrentLinkedQueue<Long> aclsToPurge = new ConcurrentLinkedQueue<Long>();
     
-    /**
-     * Default constructor, for testing.
-     */
-    AclTracker()
-    {
-        super();
-    }
-    
     public AclTracker(Properties p, SOLRAPIClient client,
                 String coreName, InformationServer informationServer)
     {

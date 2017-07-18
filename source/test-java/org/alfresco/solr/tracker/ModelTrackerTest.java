@@ -25,15 +25,21 @@
  */
 package org.alfresco.solr.tracker;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 
 import org.alfresco.httpclient.AuthenticationException;
@@ -162,14 +168,14 @@ public class ModelTrackerTest
         AlfrescoModelDiff diff = new AlfrescoModelDiff(modelName, type, oldChecksum, newChecksum);
         List<AlfrescoModelDiff> modelDiffs = new ArrayList<>();
         modelDiffs.add(diff);
-        when(this.repositoryClient.getModelsDiff(any(List.class))).thenReturn(modelDiffs);
+        when(this.repositoryClient.getModelsDiff(any(String.class),any(List.class))).thenReturn(modelDiffs);
 
         final String name = "a model name";
         M2Model model = M2Model.createModel(name);
         M2Model spiedModel = spy(model);
         model.createNamespace("uri", "prefix");
         AlfrescoModel alfrescoModel = new AlfrescoModel(spiedModel, newChecksum);
-        when(this.repositoryClient.getModel(modelName)).thenReturn(alfrescoModel);
+        when(this.repositoryClient.getModel(any(String.class),eq(modelName))).thenReturn(alfrescoModel);
 
         NamespaceDAO namespaceDao = mock(NamespaceDAO.class);
         Collection<String> values = new ArrayList<>();
