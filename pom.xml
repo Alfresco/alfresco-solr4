@@ -7,16 +7,35 @@
     <artifactId>alfresco-solr4</artifactId>
     <name>Alfresco Solr 4</name>
     <packaging>war</packaging>
+    <version>6.0-SNAPSHOT</version>
 
     <parent>
-        <artifactId>alfresco-parent</artifactId>
         <groupId>org.alfresco</groupId>
-        <version>5.3-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <artifactId>alfresco-super-pom</artifactId>
+        <version>8</version>
     </parent>
+
+    <scm>
+        <connection>scm:git:git@github.com:Alfresco/alfresco-solr4.git</connection>
+        <developerConnection>scm:git:git@github.com:Alfresco/alfresco-solr4.git</developerConnection>
+        <url>https://github.com/Alfresco/alfresco-solr4</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>alfresco-internal</id>
+            <url>https://artifacts.alfresco.com/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>alfresco-internal-snapshots</id>
+            <url>https://artifacts.alfresco.com/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <properties>
         <dependency.solr.version>4.10.3</dependency.solr.version>
+        <dependency.solr.client>6.0</dependency.solr.client>
         <maven.tomcat.path>/solr4</maven.tomcat.path>
         <m2eclipse.wtp.contextRoot>${maven.tomcat.path}</m2eclipse.wtp.contextRoot>
         <maven.tomcat.port>${tomcat.default.solr4.port}</maven.tomcat.port>
@@ -39,7 +58,7 @@
         <dependency>
             <groupId>org.alfresco</groupId>
             <artifactId>alfresco-solrclient</artifactId>
-            <version>${project.version}</version>
+            <version>${dependency.solr.client}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>asm</artifactId>
@@ -53,6 +72,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -146,14 +166,17 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <version>1.7.21</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.21</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.13</version>
         </dependency>
         <dependency>
             <groupId>com.spatial4j</groupId>
@@ -185,16 +208,35 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
+            <version>1.10.19</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
+        <!-- Non standard folder layout -->
+        <sourceDirectory>source/java</sourceDirectory>
+        <testSourceDirectory>source/test-java</testSourceDirectory>
+        <resources>
+            <resource>
+                <directory>config</directory>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>source/test-resources</directory>
+            </testResource>
+            <testResource>
+                <directory>source/test-files</directory>
+            </testResource>
+        </testResources>
+
         <finalName>solr4</finalName>
         <plugins>
             <plugin>
