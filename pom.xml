@@ -1,13 +1,9 @@
-<project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>alfresco-solr4</artifactId>
     <name>Alfresco Solr 4</name>
     <packaging>war</packaging>
-    <version>6.0-SNAPSHOT</version>
+    <version>6.0</version>
 
     <parent>
         <groupId>org.alfresco</groupId>
@@ -19,7 +15,7 @@
         <connection>scm:git:git@github.com:Alfresco/alfresco-solr4.git</connection>
         <developerConnection>scm:git:git@github.com:Alfresco/alfresco-solr4.git</developerConnection>
         <url>https://github.com/Alfresco/alfresco-solr4</url>
-        <tag>HEAD</tag>
+        <tag>alfresco-solr4-6.0</tag>
     </scm>
 
     <distributionManagement>
@@ -263,8 +259,7 @@
                                 <replaceregexp byline="true">
                                     <regexp pattern="alfresco.version=.*$" />
                                     <substitution expression="alfresco.version=${version.major}.${version.minor}.${version.revision}${version.label} (${version.build})" />
-                                    <fileset dir="${project.build.directory}"
-                                        includes="solr-instance-*/*-SpacesStore/conf/solrcore.properties" />
+                                    <fileset dir="${project.build.directory}" includes="solr-instance-*/*-SpacesStore/conf/solrcore.properties" />
                                 </replaceregexp>
                             </target>
                         </configuration>
