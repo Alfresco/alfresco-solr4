@@ -59,7 +59,7 @@ public class AlfrescoSolrTestCaseJ4 extends SolrTestCaseJ4
 
 
     public static File HOME() {
-        return getFile("../source/test-files");
+        return getFile("./source/test-files");
     }
 
     public static class SolrServletRequest extends SolrQueryRequestBase {
