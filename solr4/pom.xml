@@ -7,37 +7,19 @@
     <artifactId>alfresco-solr4</artifactId>
     <name>Alfresco Solr 4</name>
     <packaging>war</packaging>
-    <version>6.0-SNAPSHOT</version>
 
     <parent>
         <groupId>org.alfresco</groupId>
-        <artifactId>alfresco-super-pom</artifactId>
-        <version>8</version>
+        <artifactId>alfresco-solr4-parent</artifactId>
+        <version>6.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <scm>
-        <connection>scm:git:git@github.com:Alfresco/alfresco-solr4.git</connection>
-        <developerConnection>scm:git:git@github.com:Alfresco/alfresco-solr4.git</developerConnection>
-        <url>https://github.com/Alfresco/alfresco-solr4</url>
-        <tag>HEAD</tag>
-    </scm>
-
-    <distributionManagement>
-        <repository>
-            <id>alfresco-internal</id>
-            <url>https://artifacts.alfresco.com/nexus/content/repositories/releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>alfresco-internal-snapshots</id>
-            <url>https://artifacts.alfresco.com/nexus/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <properties>
-        <dependency.solr.version>4.10.3</dependency.solr.version>
-        <dependency.solr.client>6.0</dependency.solr.client>
         <maven.tomcat.path>/solr4</maven.tomcat.path>
         <m2eclipse.wtp.contextRoot>${maven.tomcat.path}</m2eclipse.wtp.contextRoot>
+        <tomcat.default.solr4.port>8083</tomcat.default.solr4.port>
+        <tomcat.default.solr4.ssl.port>8446</tomcat.default.solr4.ssl.port>
         <maven.tomcat.port>${tomcat.default.solr4.port}</maven.tomcat.port>
         <maven.tomcat.httpsPort>${tomcat.default.solr4.ssl.port}</maven.tomcat.httpsPort>
         <solr.instance.source.folder>source/solr/instance</solr.instance.source.folder>
@@ -251,7 +233,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
