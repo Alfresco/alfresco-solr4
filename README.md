@@ -15,7 +15,7 @@ The artifacts can be obtained by:
 ~~~
 <dependency>
   <groupId>org.alfresco</groupId>
-  <artifactId>alfresco-legacy-lucene</artifactId>
+  <artifactId>alfresco-solr4</artifactId>
   <version>version</version>
 </dependency>
 ~~~
