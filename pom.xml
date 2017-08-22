@@ -36,6 +36,6 @@
 
     <properties>
         <dependency.solr.version>4.10.3</dependency.solr.version>
-        <dependency.solr.client>6.0</dependency.solr.client>
+        <dependency.solr.client>6.2</dependency.solr.client>
     </properties>
 </project>
