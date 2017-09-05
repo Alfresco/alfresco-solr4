@@ -28,7 +28,25 @@
         <solr.nossl.instance.target.folder>${project.build.directory}/solr-instance-nossl</solr.nossl.instance.target.folder>
 
         <dependency.spring.version>3.2.17.RELEASE</dependency.spring.version>
+        
+        <dependency.alfresco-core.version>6.13</dependency.alfresco-core.version>
+        <dependency.alfresco-data-model.version>6.17</dependency.alfresco-data-model.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.alfresco</groupId>
+                <artifactId>alfresco-core</artifactId>
+                <version>${dependency.alfresco-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.alfresco</groupId>
+                <artifactId>alfresco-data-model</artifactId>
+                <version>${dependency.alfresco-data-model.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
 
