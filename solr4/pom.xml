@@ -30,7 +30,7 @@
         <dependency.spring.version>3.2.17.RELEASE</dependency.spring.version>
         
         <dependency.alfresco-core.version>6.13</dependency.alfresco-core.version>
-        <dependency.alfresco-data-model.version>6.17</dependency.alfresco-data-model.version>
+        <dependency.alfresco-data-model.version>6.18</dependency.alfresco-data-model.version>
     </properties>
 
     <dependencyManagement>
