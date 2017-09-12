@@ -267,11 +267,9 @@ public class ModelTracker extends AbstractTracker implements Tracker
                     }
                     break;
                 case REMOVED:
-                    // At the moment we do not unload models - I can see no side effects ....
-                    // However search is used to check for references to indexed properties or types
-                    // This will be partially broken anyway due to eventual consistency
-                    // A model should only be unloaded if there are no data dependencies
-                    // Should have been on the de-lucene list.
+                    // We now remove models as we see them - MNT-17627
+                	// Models have to be deleted from disk before we remove them from memory
+                	// We need to know the prefix for the uri to delete them
                     break;
             }
         }
@@ -309,7 +307,15 @@ public class ModelTracker extends AbstractTracker implements Tracker
                     nos.close();
                     break;
                 case REMOVED:
-                    removeMatchingModels(alfrescoModelDir, modelDiff.getModelName());
+                	// This will remove the model from the dictionary on completion
+                	try
+                	{
+                        removeMatchingModels(alfrescoModelDir, modelDiff.getModelName());
+                	}
+                	finally
+                	{
+                		AlfrescoSolrDataModel.getInstance().removeModel(modelDiff.getModelName());
+                	}
                     break;
             }
         }
@@ -460,40 +466,39 @@ public class ModelTracker extends AbstractTracker implements Tracker
      */
     private void removeMatchingModels(File alfrescoModelDir, QName modelName)
     {
+    	final String prefix = modelName.toPrefixString(this.infoSrv.getNamespaceDAO()).replace(":", ".") + ".";
+    	final String postFix = ".xml";
 
-        final String prefix = modelName.toPrefixString(this.infoSrv.getNamespaceDAO()).replace(":", ".") + ".";
-        final String postFix = ".xml";
+    	File[] toDelete = alfrescoModelDir.listFiles(new FileFilter()
+    	{
+    		@Override
+    		public boolean accept(File pathname)
+    		{
+    			if (pathname.isDirectory()) { return false; }
+    			String name = pathname.getName();
+    			if (false == name.endsWith(postFix)) { return false; }
+    			if (false == name.startsWith(prefix)) { return false; }
+    			// check is number between
+    			String checksum = name.substring(prefix.length(), name.length() - postFix.length());
+    			try
+    			{
+    				Long.parseLong(checksum);
+    				return true;
+    			}
+    			catch (NumberFormatException nfe)
+    			{
+    				return false;
+    			}
+    		}
+    	});
 
-        File[] toDelete = alfrescoModelDir.listFiles(new FileFilter()
-        {
-            @Override
-            public boolean accept(File pathname)
-            {
-                if (pathname.isDirectory()) { return false; }
-                String name = pathname.getName();
-                if (false == name.endsWith(postFix)) { return false; }
-                if (false == name.startsWith(prefix)) { return false; }
-                // check is number between
-                String checksum = name.substring(prefix.length(), name.length() - postFix.length());
-                try
-                {
-                    Long.parseLong(checksum);
-                    return true;
-                }
-                catch (NumberFormatException nfe)
-                {
-                    return false;
-                }
-            }
-        });
-
-        if (toDelete != null)
-        {
-            for (File file : toDelete)
-            {
-                file.delete();
-            }
-        }
+    	if (toDelete != null)
+    	{
+    		for (File file : toDelete)
+    		{
+    			file.delete();
+    		}
+    	}
     }
 
     private void loadModel(Map<String, M2Model> modelMap, HashSet<String> loadedModels, M2Model model)

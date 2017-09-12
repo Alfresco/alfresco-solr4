@@ -1414,6 +1414,13 @@ public class AlfrescoSolrDataModel implements QueryConstants
        
     }
 
+    public boolean removeModel(QName modelQName)
+    {
+    	modelErrors.remove(modelQName);
+    	dictionaryDAO.removeModel(modelQName); 
+    	return true;
+    }
+
     
     private Set<String> validateModel(M2Model model)
     {
