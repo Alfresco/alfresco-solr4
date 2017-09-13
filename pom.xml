@@ -3,7 +3,7 @@
     <artifactId>alfresco-solr4-parent</artifactId>
     <name>Alfresco Solr 4</name>
     <packaging>pom</packaging>
-    <version>6.2-SNAPSHOT</version>
+    <version>6.5-SNAPSHOT</version>
 
     <modules>
         <module>solr4</module>
