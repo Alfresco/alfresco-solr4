@@ -1488,7 +1488,7 @@ public class AlfrescoSolrDataModel implements QueryConstants
         }
 
         // parse cmis syntax
-        CapabilityJoin joinSupport = (mode == CMISQueryMode.CMS_STRICT) ? CapabilityJoin.NONE : CapabilityJoin.INNERONLY;
+        CapabilityJoin joinSupport = (mode == CMISQueryMode.CMS_STRICT) ? CapabilityJoin.NONE : CapabilityJoin.INNERANDOUTER;
         CmisFunctionEvaluationContext functionContext = getCMISFunctionEvaluationContext(mode, cmisVersion, alternativeDictionary);
         
         CMISDictionaryService cmisDictionary = getCMISDictionary(alternativeDictionary, cmisVersion);
