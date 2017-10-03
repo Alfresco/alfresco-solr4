@@ -1505,10 +1505,6 @@ public class AlfrescoSolrDataModel implements QueryConstants
             {
                 throw new UnsupportedOperationException("No selectors");
             }
-            if (selectorGroups.size() > 1)
-            {
-                throw new UnsupportedOperationException("Advanced join is not supported");
-            }
             selectorGroup = selectorGroups.get(0);
         }
         return queryModelQuery;
