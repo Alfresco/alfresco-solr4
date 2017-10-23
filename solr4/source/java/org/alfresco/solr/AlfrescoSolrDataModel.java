@@ -1488,7 +1488,7 @@ public class AlfrescoSolrDataModel implements QueryConstants
         }
 
         // parse cmis syntax
-        CapabilityJoin joinSupport = (mode == CMISQueryMode.CMS_STRICT) ? CapabilityJoin.NONE : CapabilityJoin.INNERONLY;
+        CapabilityJoin joinSupport = (mode == CMISQueryMode.CMS_STRICT) ? CapabilityJoin.NONE : CapabilityJoin.INNERANDOUTER;
         CmisFunctionEvaluationContext functionContext = getCMISFunctionEvaluationContext(mode, cmisVersion, alternativeDictionary);
         
         CMISDictionaryService cmisDictionary = getCMISDictionary(alternativeDictionary, cmisVersion);
@@ -1504,10 +1504,6 @@ public class AlfrescoSolrDataModel implements QueryConstants
             if (selectorGroups.size() == 0)
             {
                 throw new UnsupportedOperationException("No selectors");
-            }
-            if (selectorGroups.size() > 1)
-            {
-                throw new UnsupportedOperationException("Advanced join is not supported");
             }
             selectorGroup = selectorGroups.get(0);
         }

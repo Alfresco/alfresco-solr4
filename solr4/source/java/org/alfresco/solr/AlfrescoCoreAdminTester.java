@@ -3226,8 +3226,8 @@ public class AlfrescoCoreAdminTester
                     report,
                     core,
                     "/cmis",
-                    "SELECT D.*, O.* FROM cmis:document AS D JOIN cm:ownable AS O ON D.cmis:objectId = O.cmis:objectId",
-                    1, null, null, null, null, null, (String) null);
+                    "SELECT D.*, O.* FROM cmis:document AS D LEFT JOIN cm:ownable AS O ON D.cmis:objectId = O.cmis:objectId",
+                    11, null, null, null, null, null, (String) null);
         testQueryByHandler(
                     report,
                     core,
