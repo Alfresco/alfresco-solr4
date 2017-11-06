@@ -90,7 +90,7 @@ public class TempFileWarningLogger
         }
         catch (IOException e) 
         {
-            log.error("Unable to delete temp file", e);
+            log.debug("Unable to delete temp file", e);
         }
     }
     protected String getGlob()
