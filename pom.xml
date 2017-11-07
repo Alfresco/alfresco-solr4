@@ -3,7 +3,7 @@
     <artifactId>alfresco-solr4-parent</artifactId>
     <name>Alfresco Solr 4</name>
     <packaging>pom</packaging>
-    <version>6.5-SNAPSHOT</version>
+    <version>6.6</version>
 
     <modules>
         <module>solr4</module>
@@ -20,7 +20,7 @@
         <connection>scm:git:git@github.com:Alfresco/alfresco-solr4.git</connection>
         <developerConnection>scm:git:git@github.com:Alfresco/alfresco-solr4.git</developerConnection>
         <url>https://github.com/Alfresco/alfresco-solr4</url>
-        <tag>HEAD</tag>
+        <tag>alfresco-solr4-parent-6.6</tag>
     </scm>
 
     <distributionManagement>
