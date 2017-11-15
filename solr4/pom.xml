@@ -527,7 +527,7 @@
     <profiles>
         <!-- Profile to run the webapp on HTTP -->
         <profile>
-            <id>run</id>
+            <id>solr4run</id>
             <build>
                 <plugins>
                     <plugin>
