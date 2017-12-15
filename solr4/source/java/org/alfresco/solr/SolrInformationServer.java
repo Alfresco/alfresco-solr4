@@ -2083,9 +2083,9 @@ public class SolrInformationServer implements InformationServer
                                 deleteNode(processor, request, node);
 
                                 SolrInputDocument doc = createNewDoc(nodeMetaData, DOC_TYPE_UNINDEXED_NODE);
-                                storeDocOnSolrContentStore(nodeMetaData, doc);
                                 addDocCmd.solrDoc = doc;
                                 if (recordUnindexedNodes) {
+                                    storeDocOnSolrContentStore(nodeMetaData, doc);
                                     processor.processAdd(addDocCmd);
                                 }
 
