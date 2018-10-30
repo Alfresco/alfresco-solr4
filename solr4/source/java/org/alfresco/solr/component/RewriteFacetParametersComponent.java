@@ -395,7 +395,7 @@ public class RewriteFacetParametersComponent extends SearchComponent
                 StringBuilder mapping = new StringBuilder();
                 StringBuilder unmapped = new StringBuilder();
                 String[] fields = parseFacetField(facetFields);
-
+                
                 for(String field : fields)
                 {
                     boolean isRefinementRequest = field.startsWith("{!terms");
@@ -407,8 +407,8 @@ public class RewriteFacetParametersComponent extends SearchComponent
                         // skip facet functions 
                         continue;
                     }
-
-                    if (field.startsWith("{!") && !(isRefinementRequest))
+                    
+                    if(field.startsWith("{!"))
                     {
                         int index = field.indexOf("}");
                         if((index > 0) && (index < (field.length() - 1)))
