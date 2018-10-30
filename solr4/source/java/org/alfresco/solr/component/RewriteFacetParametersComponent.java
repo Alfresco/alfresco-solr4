@@ -395,29 +395,31 @@ public class RewriteFacetParametersComponent extends SearchComponent
                 StringBuilder mapping = new StringBuilder();
                 StringBuilder unmapped = new StringBuilder();
                 String[] fields = parseFacetField(facetFields);
-                
+
                 for(String field : fields)
                 {
-                	String prefix = "";
+                    boolean isRefinementRequest = field.startsWith("{!terms");
+                    String prefix = "";
                     field = field.trim();
-                    
+
                     if(field.endsWith("()"))
                     {
                         // skip facet functions 
                         continue;
                     }
-                    
-                    if(field.startsWith("{!"))
+
+                    if (field.startsWith("{!") && !(isRefinementRequest))
                     {
-                    	int index = field.indexOf("}");
-                    	if((index > 0) && (index < (field.length() - 1)))
-                    	{
-                    		prefix = field.substring(0, index+1);
-                    		field = field.substring(index+1);
-                    	}
+                        int index = field.indexOf("}");
+                        if((index > 0) && (index < (field.length() - 1)))
+                        {
+                            prefix = field.substring(0, index+1);
+                            field = field.substring(index+1);
+                        }
                     }
-                    
-                    if(req.getSchema().getFieldOrNull(field) != null)
+
+                    boolean noMappingIsRequired = req.getSchema().getFieldOrNull(field) != null|| isRefinementRequest;
+                    if(noMappingIsRequired)
                     {
                         if(commaSeparated.length() > 0)
                         {
