@@ -25,11 +25,6 @@
  */
 package org.alfresco.solr.component;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-
 import org.alfresco.solr.AlfrescoSolrDataModel;
 import org.alfresco.solr.AlfrescoSolrDataModel.FieldUse;
 import org.alfresco.solr.query.MimetypeGroupingQParserPlugin;
@@ -40,6 +35,11 @@ import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.handler.component.ResponseBuilder;
 import org.apache.solr.handler.component.SearchComponent;
 import org.apache.solr.request.SolrQueryRequest;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 
 /**
@@ -398,7 +398,8 @@ public class RewriteFacetParametersComponent extends SearchComponent
                 
                 for(String field : fields)
                 {
-                	String prefix = "";
+                    boolean isRefinementRequest = field.startsWith("{!terms");
+                    String prefix = "";
                     field = field.trim();
                     
                     if(field.endsWith("()"))
@@ -407,17 +408,17 @@ public class RewriteFacetParametersComponent extends SearchComponent
                         continue;
                     }
                     
-                    if(field.startsWith("{!"))
+                    if(field.startsWith("{!") && !isRefinementRequest)
                     {
-                    	int index = field.indexOf("}");
-                    	if((index > 0) && (index < (field.length() - 1)))
-                    	{
-                    		prefix = field.substring(0, index+1);
-                    		field = field.substring(index+1);
-                    	}
+                        int index = field.indexOf("}");
+                        if ((index > 0) && (index < (field.length() - 1)))
+                        {
+                            prefix = field.substring(0, index + 1);
+                            field = field.substring(index + 1);
+                        }
                     }
-                    
-                    if(req.getSchema().getFieldOrNull(field) != null)
+                    boolean noMappingIsRequired = req.getSchema().getFieldOrNull(field) != null|| isRefinementRequest;
+                    if(noMappingIsRequired)
                     {
                         if(commaSeparated.length() > 0)
                         {
