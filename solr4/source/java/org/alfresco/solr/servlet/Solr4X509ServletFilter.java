@@ -32,11 +32,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Function;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.solr.core.SolrResourceLoader;
 import org.alfresco.web.scripts.servlet.X509ServletFilterBase;
+
+import static java.util.Optional.ofNullable;
 
 /**
  * The Solr4X509ServletFilter implements the checkEnforce method of the X509ServletFilterBase.
@@ -50,6 +53,24 @@ public class Solr4X509ServletFilter extends X509ServletFilterBase
     private static final String SECURE_COMMS = "alfresco.secureComms";
 
     private static Log logger = LogFactory.getLog(Solr4X509ServletFilter.class);
+
+    static final int NOT_FOUND_HTTPS_PORT_NUMBER = -1;
+
+    private Function<ObjectName, Integer> extractPortNumber = name ->
+    {
+        try
+        {
+            return ofNullable(mxServer().getAttribute(name, "Port"))
+                    .map(Number.class::cast)
+                    .map(Number::intValue)
+                    .orElse(NOT_FOUND_HTTPS_PORT_NUMBER);
+        }
+        catch(final Exception exception)
+        {
+            logger.error("Error getting https port from MBean " + name, exception);
+            return NOT_FOUND_HTTPS_PORT_NUMBER;
+        }
+    };
 
     @Override
     protected boolean checkEnforce(ServletContext context) throws IOException
@@ -212,42 +233,34 @@ public class Solr4X509ServletFilter extends X509ServletFilterBase
         }
     }
 
-    private int getHttpsPort()
+    int getHttpsPort()
+    {
+        return connectorMBeanName().map(extractPortNumber).orElse(NOT_FOUND_HTTPS_PORT_NUMBER);
+    }
+
+    Optional<ObjectName> connectorMBeanName()
     {
         try
         {
-            MBeanServer mBeanServer = MBeanServerFactory.findMBeanServer(null).get(0);
-            QueryExp query = Query.eq(Query.attr("Scheme"), Query.value("https"));
-            Set<ObjectName> objectNames = mBeanServer.queryNames(null, query);
-
-            if (objectNames != null && objectNames.size() > 0)
-            {
-                for (ObjectName objectName : objectNames)
-                {
-                    String name = objectName.toString();
-                    if (name.indexOf("port=") > -1)
-                    {
-                        String[] parts = name.split("port=");
-                        String port = parts[1];
-                        try
-                        {
-                            int portNum = Integer.parseInt(port);
-                            return portNum;
-                        }
-                        catch (NumberFormatException e)
-                        {
-                            logger.error("Error parsing https port:" + port);
-                            return -1;
-                        }
-                    }
-                }
-            }
+            final QueryExp query = Query.eq(Query.attr("Scheme"), Query.value("https"));
+            final Set<ObjectName> connectors = mxServer().queryNames(null, query);
+            return connectors
+                    .stream()
+                    .findFirst();
         }
-        catch(Throwable t)
+        catch (final Exception exception)
         {
-            logger.error("Error getting https port:", t);
+            logger.error("Error getting the Connector MBean.", exception);
+            return Optional.empty();
         }
+    }
 
-        return -1;
+    MBeanServer mxServer()
+    {
+        return ofNullable((MBeanServerFactory.findMBeanServer(null)))
+                .filter(servers -> !servers.isEmpty())
+                .map(Collection::iterator)
+                .map(Iterator::next)
+                .orElseThrow(NoSuchElementException::new);
     }
 }
